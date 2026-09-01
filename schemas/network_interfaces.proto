@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package cyberdemo.network;
+
+message NetworkInterfaceEvent {
+  string tenant_id = 1;
+  string interface_id = 2;
+  string asset_id = 3;
+  string mac_address = 4;
+  string ip_address = 5;
+  bool is_active = 6;
+  string event_type = 7;
+  string event_time = 8;
+}

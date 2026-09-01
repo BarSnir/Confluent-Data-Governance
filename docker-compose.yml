@@ -1,0 +1,148 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: cdg-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./postgres/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+      - postgres_data:/var/lib/postgresql/data
+    command: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  debezium:
+    build:
+      context: ./debezium
+    container_name: cdg-debezium
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      BOOTSTRAP_SERVERS: ${CONFLUENT_BOOTSTRAP_SERVERS}
+      CONNECT_BOOTSTRAP_SERVERS: ${CONFLUENT_BOOTSTRAP_SERVERS}
+      CONNECT_SASL_JAAS_CONFIG: org.apache.kafka.common.security.plain.PlainLoginModule required username='${CONFLUENT_KAFKA_API_KEY}' password='${CONFLUENT_KAFKA_API_SECRET}';
+      CONNECT_PRODUCER_SASL_JAAS_CONFIG: org.apache.kafka.common.security.plain.PlainLoginModule required username='${CONFLUENT_KAFKA_API_KEY}' password='${CONFLUENT_KAFKA_API_SECRET}';
+      CONNECT_CONSUMER_SASL_JAAS_CONFIG: org.apache.kafka.common.security.plain.PlainLoginModule required username='${CONFLUENT_KAFKA_API_KEY}' password='${CONFLUENT_KAFKA_API_SECRET}';
+      GROUP_ID: debezium-cdg
+      CONFIG_STORAGE_TOPIC: _connect-configs-cdg
+      OFFSET_STORAGE_TOPIC: _connect-offsets-cdg
+      STATUS_STORAGE_TOPIC: _connect-status-cdg
+      CONFIG_STORAGE_REPLICATION_FACTOR: 3
+      OFFSET_STORAGE_REPLICATION_FACTOR: 3
+      STATUS_STORAGE_REPLICATION_FACTOR: 3
+      CONNECT_GROUP_ID: debezium-cdg
+      CONNECT_CONFIG_STORAGE_TOPIC: _connect-configs-cdg
+      CONNECT_OFFSET_STORAGE_TOPIC: _connect-offsets-cdg
+      CONNECT_STATUS_STORAGE_TOPIC: _connect-status-cdg
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 3
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 3
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 3
+      CONNECT_SECURITY_PROTOCOL: SASL_SSL
+      CONNECT_SASL_MECHANISM: PLAIN
+      CONNECT_PRODUCER_SECURITY_PROTOCOL: SASL_SSL
+      CONNECT_PRODUCER_SASL_MECHANISM: PLAIN
+      CONNECT_CONSUMER_SECURITY_PROTOCOL: SASL_SSL
+      CONNECT_CONSUMER_SASL_MECHANISM: PLAIN
+      CONNECT_REST_ADVERTISED_HOST_NAME: debezium
+      CONNECT_PLUGIN_PATH: /kafka/connect,/usr/share/java
+      CONNECT_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE: "true"
+      CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE: "true"
+    env_file:
+      - .env
+    ports:
+      - "8083:8083"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8083/connectors >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+
+  generator:
+    build:
+      context: ./generator
+    container_name: cdg-generator
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - .env
+
+  consumer:
+    build:
+      context: .
+      dockerfile: ./consumer/Dockerfile
+    container_name: cdg-consumer
+    restart: unless-stopped
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    environment:
+      CONFLUENT_BOOTSTRAP_SERVERS: ${CONFLUENT_BOOTSTRAP_SERVERS}
+      CONFLUENT_KAFKA_API_KEY: ${CONFLUENT_KAFKA_API_KEY}
+      CONFLUENT_KAFKA_API_SECRET: ${CONFLUENT_KAFKA_API_SECRET}
+      SECURITY_FINDINGS_TOPIC: security_findings
+      SECURITY_FINDINGS_CONSUMER_GROUP: ${SECURITY_FINDINGS_CONSUMER_GROUP:-security-findings-elasticsearch-v1}
+      ELASTICSEARCH_URL: ${ELASTICSEARCH_URL}
+    env_file:
+      - .env
+
+  bi_aggregator:
+    build:
+      context: .
+      dockerfile: ./consumer/Dockerfile
+    container_name: cdg-bi-aggregator
+    restart: unless-stopped
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    command: ["python", "bi_aggregator.py"]
+    environment:
+      ELASTICSEARCH_URL: ${ELASTICSEARCH_URL}
+      BI_REFRESH_SECONDS: ${BI_REFRESH_SECONDS:-30}
+    env_file:
+      - .env
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
+    container_name: cdg-elasticsearch
+    restart: unless-stopped
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: false
+      ES_JAVA_OPTS: -Xms1g -Xmx1g
+    ports:
+      - "9200:9200"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:9200/_cluster/health >/dev/null"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.15.0
+    container_name: cdg-kibana
+    restart: unless-stopped
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+
+volumes:
+  postgres_data:

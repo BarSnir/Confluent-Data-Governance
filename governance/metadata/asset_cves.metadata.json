@@ -1,0 +1,16 @@
+{
+  "topic": "asset_cves",
+  "description": "Vulnerability assignments and score updates per asset.",
+  "company": "Globex Technologies",
+  "domain": "Vulnerability Management",
+  "environment": "Demo",
+  "owner": "Vulnerability Engineering",
+  "data_type": "CVE",
+  "classification": "Confidential",
+  "tags": ["cve", "vulnerability", "globex", "cvss"],
+  "labels": {
+    "sensitivity": "confidential",
+    "retention": "90-days",
+    "source": "postgres-cdc"
+  }
+}

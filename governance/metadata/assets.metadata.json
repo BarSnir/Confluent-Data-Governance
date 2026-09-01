@@ -1,0 +1,16 @@
+{
+  "topic": "assets",
+  "description": "Asset inventory and posture updates from endpoint devices.",
+  "company": "Acme Cyber Defense",
+  "domain": "Endpoint Security",
+  "environment": "Demo",
+  "owner": "Security Platform Team",
+  "data_type": "Asset Inventory",
+  "classification": "Internal",
+  "tags": ["endpoint", "asset", "inventory", "acme"],
+  "labels": {
+    "sensitivity": "internal",
+    "retention": "30-days",
+    "source": "postgres-cdc"
+  }
+}

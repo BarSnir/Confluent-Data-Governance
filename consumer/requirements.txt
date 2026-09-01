@@ -1,0 +1,5 @@
+confluent-kafka==2.5.3
+elasticsearch==8.15.1
+protobuf==5.27.3
+grpcio-tools==1.66.2
+requests==2.32.3

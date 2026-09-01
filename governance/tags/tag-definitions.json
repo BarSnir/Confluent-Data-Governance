@@ -1,0 +1,122 @@
+[
+  {
+    "entityTypes": ["cf_entity"],
+    "name": "CDC",
+    "description": "Continuously replicated change data capture stream."
+  },
+  {
+    "entityTypes": ["cf_entity"],
+    "name": "EndpointSecurity",
+    "description": "Endpoint inventory and security posture data."
+  },
+  {
+    "entityTypes": ["cf_entity"],
+    "name": "NetworkSecurity",
+    "description": "Network interface and address security data."
+  },
+  {
+    "entityTypes": ["cf_entity"],
+    "name": "VulnerabilityManagement",
+    "description": "Vulnerability and CVE management data."
+  },
+  {
+    "entityTypes": ["cf_entity"],
+    "name": "ThreatDetection",
+    "description": "Threat detection and security finding data."
+  },
+  {
+    "entityTypes": ["cf_entity"],
+    "name": "Internal",
+    "description": "Internal business data classification."
+  },
+  {
+    "entityTypes": ["cf_entity"],
+    "name": "Confidential",
+    "description": "Confidential security and vulnerability data classification."
+  },
+  {
+    "entityTypes": ["cf_entity"],
+    "name": "Restricted",
+    "description": "Restricted security finding data classification."
+  },
+  {
+    "entityTypes": ["cf_entity"],
+    "name": "endpoint",
+    "description": "Endpoint-related data."
+  },
+  {
+    "entityTypes": ["cf_entity"],
+    "name": "asset",
+    "description": "Asset inventory data."
+  },
+  {
+    "entityTypes": ["cf_entity"],
+    "name": "inventory",
+    "description": "Inventory data."
+  },
+  {
+    "entityTypes": ["cf_entity"],
+    "name": "acme",
+    "description": "Acme Cyber Defense data product."
+  },
+  {
+    "entityTypes": ["cf_entity"],
+    "name": "network",
+    "description": "Network-related data."
+  },
+  {
+    "entityTypes": ["cf_entity"],
+    "name": "interface",
+    "description": "Network interface data."
+  },
+  {
+    "entityTypes": ["cf_entity"],
+    "name": "ip",
+    "description": "IP address data."
+  },
+  {
+    "entityTypes": ["cf_entity"],
+    "name": "wayne",
+    "description": "Wayne Enterprises data product."
+  },
+  {
+    "entityTypes": ["cf_entity"],
+    "name": "cve",
+    "description": "Common Vulnerabilities and Exposures data."
+  },
+  {
+    "entityTypes": ["cf_entity"],
+    "name": "vulnerability",
+    "description": "Vulnerability management data."
+  },
+  {
+    "entityTypes": ["cf_entity"],
+    "name": "globex",
+    "description": "Globex Technologies data product."
+  },
+  {
+    "entityTypes": ["cf_entity"],
+    "name": "cvss",
+    "description": "CVSS vulnerability score data."
+  },
+  {
+    "entityTypes": ["cf_entity"],
+    "name": "findings",
+    "description": "Security finding data."
+  },
+  {
+    "entityTypes": ["cf_entity"],
+    "name": "threat",
+    "description": "Threat detection data."
+  },
+  {
+    "entityTypes": ["cf_entity"],
+    "name": "anomaly",
+    "description": "Anomaly detection data."
+  },
+  {
+    "entityTypes": ["cf_entity"],
+    "name": "umbrella",
+    "description": "Umbrella Networks data product."
+  }
+]

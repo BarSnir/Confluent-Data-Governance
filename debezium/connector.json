@@ -1,0 +1,47 @@
+{
+  "name": "pg-cyber-cdc",
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "tasks.max": "1",
+
+    "database.hostname": "${POSTGRES_HOST}",
+    "database.port": "${POSTGRES_PORT}",
+    "database.user": "${POSTGRES_USER}",
+    "database.password": "${POSTGRES_PASSWORD}",
+    "database.dbname": "${POSTGRES_DB}",
+
+    "database.server.name": "${DEBEZIUM_TOPIC_PREFIX}",
+    "topic.prefix": "${DEBEZIUM_TOPIC_PREFIX}",
+
+    "plugin.name": "pgoutput",
+    "slot.name": "${DEBEZIUM_SLOT_NAME}",
+    "publication.name": "${DEBEZIUM_PUBLICATION_NAME}",
+    "publication.autocreate.mode": "filtered",
+
+    "table.include.list": "public.assets,public.network_interfaces,public.asset_cves",
+
+    "schema.include.list": "public",
+    "include.schema.changes": "false",
+
+    "tombstones.on.delete": "false",
+    "decimal.handling.mode": "double",
+    "time.precision.mode": "connect",
+
+    "key.converter": "io.confluent.connect.protobuf.ProtobufConverter",
+    "key.converter.schema.registry.url": "${SCHEMA_REGISTRY_URL}",
+    "key.converter.basic.auth.credentials.source": "USER_INFO",
+    "key.converter.basic.auth.user.info": "${SCHEMA_REGISTRY_API_KEY}:${SCHEMA_REGISTRY_API_SECRET}",
+    "key.converter.auto.register.schemas": "true",
+
+    "value.converter": "io.confluent.connect.protobuf.ProtobufConverter",
+    "value.converter.schema.registry.url": "${SCHEMA_REGISTRY_URL}",
+    "value.converter.basic.auth.credentials.source": "USER_INFO",
+    "value.converter.basic.auth.user.info": "${SCHEMA_REGISTRY_API_KEY}:${SCHEMA_REGISTRY_API_SECRET}",
+    "value.converter.auto.register.schemas": "true",
+
+    "transforms": "route",
+    "transforms.route.type": "org.apache.kafka.connect.transforms.RegexRouter",
+    "transforms.route.regex": "${DEBEZIUM_TOPIC_PREFIX}\\.public\\.(.*)",
+    "transforms.route.replacement": "$1"
+  }
+}

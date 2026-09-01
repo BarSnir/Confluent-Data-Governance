@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package cyberdemo.assets;
+
+message AssetEvent {
+  string tenant_id = 1;
+  string asset_id = 2;
+  string device_type = 3;
+  string os_vendor = 4;
+  string os_version = 5;
+  string firmware_version = 6;
+  string risk_level = 7;
+  bool is_quarantined = 8;
+  string event_type = 9;
+  string event_time = 10;
+}

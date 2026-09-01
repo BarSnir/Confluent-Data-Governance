@@ -1,0 +1,15 @@
+[
+  {
+    "name": "CybersecurityDataProduct",
+    "description": "Business context for cybersecurity streaming topics.",
+    "attributeDefs": [
+      {"name": "company", "isOptional": true, "cardinality": "SINGLE", "typeName": "string", "options": {"maxStrLength": 128, "applicableEntityTypes": "[\"kafka_topic\"]"}},
+      {"name": "domain", "isOptional": true, "cardinality": "SINGLE", "typeName": "string", "options": {"maxStrLength": 128, "applicableEntityTypes": "[\"kafka_topic\"]"}},
+      {"name": "environment", "isOptional": true, "cardinality": "SINGLE", "typeName": "string", "options": {"maxStrLength": 64, "applicableEntityTypes": "[\"kafka_topic\"]"}},
+      {"name": "data_type", "isOptional": true, "cardinality": "SINGLE", "typeName": "string", "options": {"maxStrLength": 128, "applicableEntityTypes": "[\"kafka_topic\"]"}},
+      {"name": "classification", "isOptional": true, "cardinality": "SINGLE", "typeName": "string", "options": {"maxStrLength": 64, "applicableEntityTypes": "[\"kafka_topic\"]"}},
+      {"name": "source_system", "isOptional": true, "cardinality": "SINGLE", "typeName": "string", "options": {"maxStrLength": 128, "applicableEntityTypes": "[\"kafka_topic\"]"}},
+      {"name": "retention_policy", "isOptional": true, "cardinality": "SINGLE", "typeName": "string", "options": {"maxStrLength": 64, "applicableEntityTypes": "[\"kafka_topic\"]"}}
+    ]
+  }
+]

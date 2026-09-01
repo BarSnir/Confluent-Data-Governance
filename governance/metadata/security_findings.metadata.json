@@ -1,0 +1,16 @@
+{
+  "topic": "security_findings",
+  "description": "Enriched and detected cybersecurity findings generated in real time.",
+  "company": "Umbrella Networks",
+  "domain": "Threat Detection",
+  "environment": "Demo",
+  "owner": "Threat Analytics Team",
+  "data_type": "Security Findings",
+  "classification": "Restricted",
+  "tags": ["findings", "threat", "anomaly", "umbrella"],
+  "labels": {
+    "sensitivity": "restricted",
+    "retention": "180-days",
+    "source": "flink"
+  }
+}

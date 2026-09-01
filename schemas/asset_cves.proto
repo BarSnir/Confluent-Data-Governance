@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package cyberdemo.cves;
+
+message AssetCveEvent {
+  string tenant_id = 1;
+  string asset_id = 2;
+  int32 cve_record_id = 3;
+  string cve_id = 4;
+  double cvss_score = 5;
+  string severity = 6;
+  string event_type = 7;
+  string event_time = 8;
+}

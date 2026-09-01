@@ -1,0 +1,16 @@
+{
+  "topic": "network_interfaces",
+  "description": "Network interface status and address data for managed assets.",
+  "company": "Wayne Enterprises",
+  "domain": "Network Security",
+  "environment": "Demo",
+  "owner": "Network Operations",
+  "data_type": "Network Interface",
+  "classification": "Internal",
+  "tags": ["network", "interface", "ip", "wayne"],
+  "labels": {
+    "sensitivity": "internal",
+    "retention": "14-days",
+    "source": "postgres-cdc"
+  }
+}

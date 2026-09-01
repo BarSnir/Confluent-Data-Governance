@@ -1,0 +1,21 @@
+{
+  "index_patterns": ["security-findings*"],
+  "template": {
+    "mappings": {
+      "properties": {
+        "tenant_id": {"type": "keyword"},
+        "asset_id": {"type": "keyword"},
+        "device_type": {"type": "keyword"},
+        "ip_address": {"type": "ip"},
+        "cve_id": {"type": "keyword"},
+        "cvss_score": {"type": "float"},
+        "severity": {"type": "keyword"},
+        "anomaly_score": {"type": "float"},
+        "finding_type": {"type": "keyword"},
+        "predicted_risk": {"type": "keyword"},
+        "model_version": {"type": "keyword"},
+        "event_time": {"type": "date"}
+      }
+    }
+  }
+}

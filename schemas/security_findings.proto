@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package cyberdemo.findings;
+
+message SecurityFinding {
+  string tenant_id = 1;
+  string asset_id = 2;
+  string device_type = 3;
+  string ip_address = 4;
+  string cve_id = 5;
+  double cvss_score = 6;
+  string severity = 7;
+  double anomaly_score = 8;
+  string finding_type = 9;
+  string predicted_risk = 10;
+  string model_version = 11;
+  string event_time = 12;
+}
